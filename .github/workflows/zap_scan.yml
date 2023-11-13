@@ -29,4 +29,4 @@ jobs:
     - name: OWASP ZAP Scan on openIMIS
       uses: zaproxy/action-baseline@v0.10.0
       with:
-        target: 'localhost:80'
+        target: 'http://localhost/'
