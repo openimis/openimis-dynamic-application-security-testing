@@ -18,12 +18,13 @@ jobs:
       with:
         repository: 'openimis/openimis-dist_dkr'
         path: 'openimis-dockerized'
+        ref: 'develop'
 
     - name: Set up Docker Environment for openIMIS
       run: |
         cd openimis-dockerized
         cp .env.example .env
-        docker-compose up -d
+        docker compose up -d
 
     - name: OWASP ZAP Scan on openIMIS
       uses: zaproxy/action-baseline@v0.10.0
