@@ -1,0 +1,31 @@
+name: openIMIS DAST Testing
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # This schedule runs once a day at midnight
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout openimis-dist_dkr repository
+      uses: actions/checkout@v2
+      with:
+        repository: 'openimis/openimis-dist_dkr'
+        path: 'openimis-dockerized'
+
+    - name: Set up Docker Environment for openIMIS
+      run: |
+        cd openimis-dockerized
+        cp .env.example .env
+        docker-compose up -d
+
+    - name: OWASP ZAP Scan on openIMIS
+      uses: zaproxy/action-baseline@v0.10.0
+      with:
+        target: 'http://192.168.0.20:80'
